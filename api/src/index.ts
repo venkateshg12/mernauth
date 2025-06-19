@@ -1,31 +1,32 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-// Configure dotenv FIRST before accessing any environment variables
-dotenv.config();
-
-const MONGO_URI: string = process.env.MONGO_URI as string;
-
-if (!MONGO_URI) {
-    console.error('MONGO_URI is not defined in environment variables');
-    console.error('Make sure you have a .env file in your project root with MONGO_URI=your_connection_string');
-    console.error('Current working directory:', process.cwd());
-    console.error('Available env vars:', Object.keys(process.env).filter(key => key.includes('MONGO')));
-    process.exit(1);
-}
-
-mongoose.connect(MONGO_URI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch((err) => {
-        console.error('MongoDB connection error:', err);
-        process.exit(1);
-    });
+import "dotenv/config";
+import cors from "cors"
+import cookieParser from "cookie-parser"
+import ConnectToMongoDb from "./config/db";
+import { APP_ORIGIN } from "./constants/env";
 
 const app = express();
 
-app.listen(3000, () => {
+app.use(express.json()); // allows express server to parse json request bodies.
+
+//  built-in middleware in Express that parses incoming form data and makes it available under req.body.
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+
+    // Only allow requests from this specific frontend origin.
+    origin: APP_ORIGIN,
+
+    // Allow the frontend to send cookies, authorization headers, or any credentials when making a request.
+    credentials: true,
+}))
+
+// which lets your backend read cookies sent by the client (like the browser).
+app.use(cookieParser());
+
+
+app.listen(3000, async () => {
     console.log('Server is running on port 3000');
+    await ConnectToMongoDb();
 });
