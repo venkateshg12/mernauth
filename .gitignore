@@ -1,0 +1,43 @@
+# Node dependencies
+node_modules/
+client/node_modules/
+api/node_modules/
+
+# Build output
+dist/
+api/dist/
+client/dist/
+client/.next/
+client/out/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime files
+*.tsbuildinfo
+*.local
+
+# OS-specific
+.DS_Store
+
+# IDE-specific
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Frontend build (if using Vite or other bundlers)
+client/.vite/
+
+
+# root .gitignore
+api/.env
+client/.env
