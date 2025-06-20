@@ -5,6 +5,10 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import ConnectToMongoDb from "./config/db";
 import { APP_ORIGIN } from "./constants/env";
+import errorHandler from "./utils/errorHandler";
+import catchError from "./utils/catchError";
+import { OK } from "./constants/http";
+import authRoutes from "./routes/auth.route";
 
 const app = express();
 
@@ -25,6 +29,20 @@ app.use(cors({
 // which lets your backend read cookies sent by the client (like the browser).
 app.use(cookieParser());
 
+app.get("/", catchError(
+    async (req, res, next) => {
+        res.status(OK).json({
+            status: "Helathy",
+        })
+    }
+))
+
+app.use("/auth", authRoutes);
+
+// Axios / fs / DB failures
+// Accessing undefined
+// Invalid input
+app.use(errorHandler);
 
 app.listen(3000, async () => {
     console.log('Server is running on port 3000');
