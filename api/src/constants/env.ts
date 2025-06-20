@@ -11,3 +11,6 @@ export default getEnv;
 
 export const MONGO_URI = getEnv("MONGO_URI");
 export const APP_ORIGIN = getEnv("APP_ORIGIN")
+export const JWT_REFRESH_SECRET = getEnv("JWT_REFRESH_SECRET");
+export const JWT_SECRET = getEnv("JWT_SECRET")
+export const NODE_ENV = getEnv("NODE_ENV");
