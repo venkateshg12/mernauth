@@ -34,10 +34,12 @@ userSchema.pre("save", async function (next) {
 })
 
 //  checks whether the entered password matches the stored one.
-
 userSchema.methods.comparePassword = async function (val: string) {
     return compareValue(val, this.password);
 }
+
+// mongoose.model() is a function provided by Mongoose to create a model based on a schema.
+// A model in Mongoose is the main way you interact with a MongoDB collection.
 
 const userModel = mongoose.model<UserDocument>("Users", userSchema);
 export default userModel;

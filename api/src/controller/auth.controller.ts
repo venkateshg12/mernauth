@@ -17,11 +17,11 @@ const registerSchema = z.object({
 
 export const registerHandler = catchError(async (req, res) => {
     // validate request.
-    const request = registerSchema.parse({
+    const request = registerSchema.parse({   //  parse() method is used to validate that object using Zod’s schema.
         ...req.body,
         userAgent: req.headers["user-agent"],
     })
-
+    
     // call service 
     const { user, refreshToken, accessToken } = await createAccount(request);
 
