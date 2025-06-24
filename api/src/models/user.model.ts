@@ -3,12 +3,15 @@ import { string } from "zod";
 import { compareValue, hashValue } from "../utils/bcrypt";
 
 export interface UserDocument extends mongoose.Document {
+    _id: mongoose.Types.ObjectId;
+    __v?: number;
     email: string,
     password: string;
     verified: boolean;
     createdAt: Date;
     updatedAt: Date;
     comparePassword(val: string): Promise<boolean>;
+    omitPassword():Pick< UserDocument,  "_id" | "email" | "verified" | "createdAt" | "updatedAt" | "__v">;
 }
 
 const userSchema = new mongoose.Schema<UserDocument>(
@@ -36,6 +39,12 @@ userSchema.pre("save", async function (next) {
 //  checks whether the entered password matches the stored one.
 userSchema.methods.comparePassword = async function (val: string) {
     return compareValue(val, this.password);
+}
+
+userSchema.methods.omitPassword = function() {
+    const user = this.toObject();
+    delete user.password;
+    return user;
 }
 
 // mongoose.model() is a function provided by Mongoose to create a model based on a schema.
