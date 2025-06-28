@@ -9,5 +9,7 @@ authRoutes.get("/logout", logoutHandler);
 authRoutes.get("/refresh", refreshHandler);
 authRoutes.get("/verify/email/:code", verifyEmailHandler);
 authRoutes.post("/password/forgot", sendPasswordResetHandler);
+authRoutes.post("/password/reset", resetPasswordHandler);
+
 
 export default authRoutes;

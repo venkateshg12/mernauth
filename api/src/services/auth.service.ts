@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import { RefreshTokenPayload, refreshTokenSignOptions, signToken, verifyToken } from "../utils/jwt";
 import { sendMail } from "../utils/sendMail";
 import { getPasswordResetTemplate, getVerifyEmailTemplate } from "../utils/emailTemplates";
+import { hashValue } from "../utils/bcrypt";
 
 
 type createAccountParams = {
@@ -187,14 +188,52 @@ export const sendPasswordResetEmail = async (email: string) => {
     // send verification email
     const url = `${APP_ORIGIN}/password/reset?code=${verificationCode._id}&exp=${expiresAt.getTime()}`;
 
-    const { data } = await sendMail({
+    const { data, error } = await sendMail({
         to: user.email,
         ...getPasswordResetTemplate(url)
     });
+    appAssert(
+        data?.id,
+        INTERNAL_SERVER_ERROR,
+        `${error?.name} - ${error?.message}`
+    )
     // return success
     return {
-        user,
-        emailId: data ? data.id : undefined
+        url,
+        emailId: data ? data.id : undefined,
     }
 
+}
+
+type ResetPasswordParams = {
+    password: string,
+    verificationcode: string,
+}
+export const resetPassword = async ({ password, verificationcode }: ResetPasswordParams) => {
+    // get the verification code
+    const validCode = await VerificationCodeModel.findOne({
+        _id: verificationcode,
+        type: VerificationCodeType.PasswordReset,
+        expiresAt: { $gt: new Date() },
+    });
+    appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+    //update the users password
+    const updateUser = await userModel.findByIdAndUpdate(
+        validCode.userId,
+        {
+            password: await hashValue(password)
+        }
+    )
+    appAssert(updateUser, INTERNAL_SERVER_ERROR, "Failed to reset password");
+
+    //delete the verification code
+    await validCode.deleteOne();
+    //delete all sessions
+    await SessionModel.deleteMany({
+        userId: updateUser._id,
+    });
+
+    return {
+        user: updateUser.omitPassword(),
+    }
 }
