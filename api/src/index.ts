@@ -9,6 +9,9 @@ import errorHandler from "./utils/errorHandler";
 import catchError from "./utils/catchError";
 import { OK } from "./constants/http";
 import authRoutes from "./routes/auth.route";
+import authenticate from "./middleware/authenticate";
+import userRoutes from "./routes/user.route";
+import sessionRoutes from "./routes/session.route";
 
 const app = express();
 
@@ -38,6 +41,10 @@ app.get("/", catchError(
 ))
 
 app.use("/auth", authRoutes);
+
+// protected Routes 
+app.use("/user", authenticate, userRoutes);
+app.use("/sessions", authenticate, sessionRoutes);
 
 // Axios / fs / DB failures
 // Accessing undefined

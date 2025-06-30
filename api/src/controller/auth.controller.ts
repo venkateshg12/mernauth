@@ -66,11 +66,11 @@ export const verifyEmailHandler = catchError(async (req, res) => {
     await verifyEmail(verficationCode);
 
     return res.status(OK).json({
-        message : "Email was successfully verified",
+        message: "Email was successfully verified",
     })
 })
 
-export const sendPasswordResetHandler = catchError(async(req, res) =>{
+export const sendPasswordResetHandler = catchError(async (req, res) => {
     const email = emailSchema.parse(req.body.email);
 
     // call service
@@ -78,11 +78,15 @@ export const sendPasswordResetHandler = catchError(async(req, res) =>{
     return res.status(OK).json({
         message: "Password reset email sent!",
     });
-   
+
 })
 
-export const resetPasswordHandler = catchError(async(req, res) =>{
+export const resetPasswordHandler = catchError(async (req, res) => {
     const request = resetPasswordSchema.parse(req.body);
-    const result = await resetPassword(request);
-    
+    const result = await resetPassword({
+        password: request.password,
+        verificationCode: request.verificationCode,
+    });
+    clearAuthCookies(res);
+    return res.status(OK).json({ "message": "Password reset successfull" });
 })
