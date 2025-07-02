@@ -77,7 +77,7 @@ const SignIn = () => {
           </button>
           <div className="flex gap-2 justify-center">
             <span>Don't have an account ?</span>{" "}
-            <Link to="/signup" className="text-blue-700 hover:underline">
+            <Link to="/register" className="text-blue-700 hover:underline">
               Sign Up
             </Link>
           </div>

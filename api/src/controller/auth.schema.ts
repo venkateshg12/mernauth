@@ -12,7 +12,7 @@ export const loginSchema = z.object({
 export const registerSchema = loginSchema.extend({
     confirmPassword: z.string().min(6).max(255),
 }).refine((data) => data.password === data.confirmPassword, {
-    "message": "messages do not match",
+    "message": "password do not match",
     path: ["confirmPassword"],
 })
 

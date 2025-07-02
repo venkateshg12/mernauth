@@ -21,6 +21,9 @@ const Header = () => {
                             <Link to="login">
                                 <li>Sign In</li>
                             </Link>
+                             <Link to="register">
+                                <li>Register</li>
+                            </Link>
                         </ul>
                     </div>
                 </div>
