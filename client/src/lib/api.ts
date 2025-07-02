@@ -1,5 +1,5 @@
 import API from "../config/appClient"
 
 export const login = async (data: any) => {
-    API.post("/auth/login", data);
+   return  API.post("/auth/login", data);
 }

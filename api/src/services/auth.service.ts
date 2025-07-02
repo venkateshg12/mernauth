@@ -74,7 +74,7 @@ export const loginUser = async ({ email, password, userAgent }: LoginParams) => 
     appAssert(user, UNAUTHORIZED, "Invalid email or password")
 
     // validate password from the request
-    const isValid = user.comparePassword(password);
+    const isValid = await user.comparePassword(password);
     appAssert(isValid, UNAUTHORIZED, "Invalid email or password")
     // create a session
 
