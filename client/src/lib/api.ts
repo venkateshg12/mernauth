@@ -9,9 +9,10 @@ export interface LoginData {
 export interface RegisterData {
    email: string;
    password: string;
-   confirmPassword : string
+   confirmPassword: string
    // Add other fields as needed, e.g., name, username, etc.
 }
+
 
 export const login = async (data: LoginData) => {
    return API.post("/auth/login", data);
@@ -20,3 +21,9 @@ export const login = async (data: LoginData) => {
 export const register = async (data: RegisterData) => {
    return API.post("/auth/register", data);
 };
+
+export type TypeVerificationCode = string;
+
+export const verifyEmail = async (verificationCode: TypeVerificationCode) => {
+   return API.get(`/auth/verify/email/${verificationCode}`);
+}

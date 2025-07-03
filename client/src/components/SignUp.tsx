@@ -8,7 +8,7 @@ const SignUp = () => {
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const navigate = useNavigate();
-    const { mutate: createAccount, isPending, isError, error } = useMutation({
+    const { mutate: createAccount, isError, error } = useMutation({
         mutationFn: register,
         onSuccess: () => {
             navigate('/', {
@@ -68,7 +68,6 @@ const SignUp = () => {
                     />
                     <button
                         type="submit"
-                        onClick={() => createAccount({ email, password, confirmPassword })}
                         className="w-full px-4 py-3 cursor-pointer text-lg font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
                     >
                         Register
