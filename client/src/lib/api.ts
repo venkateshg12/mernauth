@@ -31,3 +31,10 @@ export const verifyEmail = async (verificationCode: TypeVerificationCode) => {
 export const sendPasswordResetEmail = async ({ email }: { email: string }) => {
    return API.post("/auth/password/forgot", { email });
 };
+type Params = {
+   verificationCode: string,
+   password: string,
+}
+export const resetPassword = async ({ verificationCode, password }: Params) => {
+   API.post("/auth/password/reset", { verificationCode, password });
+}

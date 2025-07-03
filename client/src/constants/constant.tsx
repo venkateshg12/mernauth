@@ -1,6 +1,4 @@
 
-
-
 const Spinner: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-full">
@@ -31,3 +29,85 @@ export const WrongTick = () => {
     </>
   )
 }
+
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { resetPassword } from "../lib/api";
+
+export const ResetPasswordForm = ({ code }:{code : string}) => {
+  const [password, setPassword] = useState("");
+
+  const {
+    mutate: resetUserPassword,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: resetPassword,
+  });
+
+  return (
+    <>
+      <h2 className="text-3xl font-bold mb-6 text-center">Change your password</h2>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        {isError && (
+          <div className="text-red-600 text-sm mb-3 text-center">
+            {error.message || "An error occurred"}
+          </div>
+        )}
+
+        {isSuccess ? (
+          <div className="flex flex-col items-center gap-3">
+            <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-md text-sm w-full text-center">
+              ✅ Password updated successfully!
+            </div>
+            <Link to="/login" replace className="text-blue-600 hover:underline text-sm">
+              Sign in
+            </Link>
+          </div>
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              resetUserPassword({
+                password,
+                verificationCode: code,
+              });
+            }}
+            className="flex flex-col gap-4"
+          >
+            <div className="text-left">
+              <label htmlFor="password" className="text-sm font-medium mb-1 block">
+                New Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoFocus
+                required
+                className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isPending || password.length < 6}
+              className={`w-full px-4 py-2 font-semibold text-white rounded-md transition-colors duration-300 ${
+                password.length < 6 || isPending
+                  ? "bg-blue-300 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {isPending ? "Resetting..." : "Reset Password"}
+            </button>
+          </form>
+        )}
+      </div>
+    </>
+  );
+};
