@@ -32,7 +32,7 @@ const VerifyEmail = () => {
               <p className="text-gray-500 text-sm">
                 The link is either invalid or expired.{" "}
                 <Link
-                  to="/password/reset"
+                  to="/password/forgot"
                   replace
                   className="text-blue-600 underline hover:text-blue-800"
                 >

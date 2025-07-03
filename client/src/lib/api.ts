@@ -27,3 +27,7 @@ export type TypeVerificationCode = string;
 export const verifyEmail = async (verificationCode: TypeVerificationCode) => {
    return API.get(`/auth/verify/email/${verificationCode}`);
 }
+
+export const sendPasswordResetEmail = async ({ email }: { email: string }) => {
+   return API.post("/auth/password/forgot", { email });
+};

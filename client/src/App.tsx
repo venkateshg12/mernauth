@@ -7,6 +7,8 @@ import Header from "./components/Header";
 import About from "./components/About";
 import SignUp from "./components/SignUp";
 import VerifyEmail from "./components/VerifyEmail";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
           <Route path="/verify/email/:code" element={<VerifyEmail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
+          <Route path="/password/forgot" element={<ForgotPassword />} />
+          <Route path="/password/reset" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>
