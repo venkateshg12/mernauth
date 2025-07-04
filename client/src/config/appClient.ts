@@ -9,8 +9,8 @@ const API = axios.create(options);
 API.interceptors.response.use(
     // (response) => response.data,
     (response) => {
-        console.log("Full Axios response:", response.data);
-        return response.data.message;
+        // console.log("Full Axios response:", response.data);
+        return response.data;
     },
     (error) => {
         const { status, data } = error.response;

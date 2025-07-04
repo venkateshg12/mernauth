@@ -38,3 +38,7 @@ type Params = {
 export const resetPassword = async ({ verificationCode, password }: Params) => {
    API.post("/auth/password/reset", { verificationCode, password });
 }
+
+export const getUser = async () => {
+   return API.get("/user");
+}

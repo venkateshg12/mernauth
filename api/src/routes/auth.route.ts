@@ -5,12 +5,11 @@ const authRoutes = Router(); // Router() is a method provided by Express to crea
 
 // prefix /auth.
 authRoutes.post("/register", registerHandler);
-authRoutes.post("/login", loginHandler);
+authRoutes.post("/login", loginHandler); 
 authRoutes.get("/logout", logoutHandler);
 authRoutes.get("/refresh", refreshHandler);
 authRoutes.get("/verify/email/:code", verifyEmailHandler);
 authRoutes.post("/password/forgot", sendPasswordResetHandler);
 authRoutes.post("/password/reset", resetPasswordHandler);
-
 
 export default authRoutes;
