@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { getUser } from "../lib/api";
+import type { User } from "../constants/constant";
 
 export const AUTH = "auth";
 const useAuth = (opts = {}) => {
-    const { data: user, ...rest } = useQuery({
+    const { data: user, ...rest } = useQuery<User>({
         queryKey: [AUTH],
         queryFn: getUser,
         staleTime: Infinity,

@@ -1,8 +1,9 @@
+import { UserMenu } from "../constants/constant";
 
 const Home = () => {
   return (
-    <div>
-      
+    <div className="bg-blue-950 h-screen">
+      <UserMenu/>
     </div>
   )
 }

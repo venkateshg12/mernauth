@@ -1,7 +1,7 @@
 
 const Spinner: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center w-full  min-h-screen z-50">
       <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
@@ -31,9 +31,9 @@ export const WrongTick = () => {
 }
 
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { resetPassword } from "../lib/api";
+import { logout, resetPassword } from "../lib/api";
 
 export const ResetPasswordForm = ({ code }:{code : string}) => {
   const [password, setPassword] = useState("");
@@ -109,5 +109,86 @@ export const ResetPasswordForm = ({ code }:{code : string}) => {
         )}
       </div>
     </>
+  );
+};
+
+import type { ReactNode } from "react";
+
+export interface PublicRouteProps {
+  children: ReactNode;
+}
+
+export interface User {
+  email: string;
+  verified: boolean;
+  createdAt: string;
+}
+
+import { useNavigate } from "react-router-dom";
+import {useRef, useEffect } from "react";
+
+export const UserMenu = () => {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate: signOut } = useMutation({
+    mutationFn: logout,
+    onSettled: () => {
+      queryClient.clear();
+      navigate("/login", { replace: true });
+    },
+  });
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="absolute right-6 top-6" ref={menuRef}>
+      {/* Avatar Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-10 h-10 rounded-full bg-gray-300 border-2 border-white hover:opacity-90 focus:outline-none"
+      >
+        <img
+          src="/user-avatar.png"
+          alt="avatar"
+          className="w-full h-full cursor-pointer object-cover rounded-full"
+        />
+      </button>
+
+      {/* Dropdown Menu */}
+      {open && (
+        <div className="w-40 bg-white shadow-lg rounded-lg overflow-hidden -left-37  absolute z-50">
+          <button
+            onClick={() => navigate("/profile")}
+            className="block w-full px-4 py-1   text-sm hover:bg-gray-300 text-center cursor-pointer"
+          >
+            Profile
+          </button>
+          <button
+            onClick={() => navigate("/settings")}
+            className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-300  cursor-pointer"
+          >
+            Settings
+          </button>
+          <button
+            onClick={() => signOut()}
+            className="block w-full px-4 py-2 text-center text-sm text-red-600 hover:bg-gray-300 cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
   );
 };

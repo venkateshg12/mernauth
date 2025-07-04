@@ -7,14 +7,21 @@ const options = {
 
 const API = axios.create(options);
 API.interceptors.response.use(
-    // (response) => response.data,
-    (response) => {
-        // console.log("Full Axios response:", response.data);
-        return response.data;
-    },
-    (error) => {
-        const { status, data } = error.response;
-        return Promise.reject({ status, ...data })
+  (response) => response.data,
+  (error) => {
+    if (!error.response) {
+      return Promise.reject({
+        status: 500,
+        message: "Network error. Please check your internet connection.",
+      });
     }
-)
+
+    const { status, data } = error.response;
+
+    return Promise.reject({
+      status,
+      ...data,
+    });
+  }
+);
 export default API;

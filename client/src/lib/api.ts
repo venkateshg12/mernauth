@@ -1,4 +1,5 @@
 import API from "../config/appClient"
+import type { User } from "../constants/constant";
 
 // Define interfaces for the expected data shape
 export interface LoginData {
@@ -39,6 +40,11 @@ export const resetPassword = async ({ verificationCode, password }: Params) => {
    API.post("/auth/password/reset", { verificationCode, password });
 }
 
-export const getUser = async () => {
-   return API.get("/user");
+export const getUser = async (): Promise<User> => {
+   return await API.get("/user");
+}  
+
+
+export const logout = async () =>{
+   return API.get("/logout");
 }
