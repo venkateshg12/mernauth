@@ -192,3 +192,45 @@ export const UserMenu = () => {
     </div>
   );
 };
+
+import React from "react";
+import useDeleteSession from "../hooks/useDeleteSession";
+
+type Session = {
+  _id: string;
+  createdAt: string;
+  userAgent: string;
+  isCurrent: boolean;
+}
+interface SessionProps {
+  session : Session
+}
+export const SessionCard = ({ session }: SessionProps) => {
+  const { _id, createdAt, userAgent, isCurrent } = session;
+  const { deleteSession, isPending } = useDeleteSession({ sessionId: _id });
+
+  return (
+    <div className="flex p-3 border border-gray-200 rounded-md mb-2 items-center">
+      <div className="flex-1">
+        <div className="font-bold text-sm mb-1">
+          {new Date(createdAt).toLocaleString("en-US")}
+          {isCurrent && " (current session)"}
+        </div>
+        <div className="text-gray-500 text-xs">{userAgent}</div>
+      </div>
+
+      {!isCurrent && (
+        <button
+          onClick={() => deleteSession()}
+          title="Delete Session"
+          disabled={isPending}
+          className={`ml-4 self-center text-xl text-red-400 hover:text-red-600 transition 
+                      ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        >
+          delete
+        </button>
+      )}
+    </div>
+  );
+};
+

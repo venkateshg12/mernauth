@@ -42,9 +42,17 @@ export const resetPassword = async ({ verificationCode, password }: Params) => {
 
 export const getUser = async (): Promise<User> => {
    return await API.get("/user");
-}  
+}
 
 
-export const logout = async () =>{
+export const logout = async () => {
    return API.get("/logout");
+}
+
+export const getSession = async () => {
+   return API.get("/sessions");
+}
+
+export const deleteSessions = async ({ id }: { id: string }) => {
+   return API.delete(`/sessions/${id}`);
 }

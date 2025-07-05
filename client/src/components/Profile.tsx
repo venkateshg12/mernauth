@@ -1,5 +1,4 @@
 import useAuth from "../hooks/useAuth";
-
 const Profile = () => {
   const { user } = useAuth();
   console.log(user);

@@ -11,6 +11,7 @@ import ResetPassword from "./components/ResetPassword";
 import WithHeaderLayOut from "./components/withHeaderLayOut";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import Settings from "./components/Settings";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route element={<WithHeaderLayOut />}>
             <Route path="/login" element={<PublicRoute><SignIn /></PublicRoute>} />
             <Route path="/register" element={<PublicRoute><SignUp /></PublicRoute>} />
