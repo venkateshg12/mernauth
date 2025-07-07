@@ -7,32 +7,32 @@ public class a {
         PrintWriter out = new PrintWriter(System.out);
         int t = Integer.parseInt(read.readLine().trim());
         while (t-- > 0) {
+            int n = Integer.parseInt(read.readLine().trim());
             String[] val = read.readLine().split(" ");
-            long a = Long.parseLong(val[0]);
-            long b = Long.parseLong(val[1]);
-            long x = Long.parseLong(val[2]);
-            long y = Long.parseLong(val[3]);
-            long sum = 0;
-            if (a == b) {
-                out.println("0");
-            } else if (a > b) {
-                if (a - 1 == b && a % 2 != 0) {
-                    out.println(y);
-                }else {
-                    out.println(-1);
+            int[] arr = new int[n];
+            int[] c = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = Integer.parseInt(val[i]);
+                c[i] = Integer.parseInt(val[i]);
+            }
+            Arrays.sort(c);
+            int k = 0;
+            for (int i = 0; i < n; i++) {
+                if (arr[i] == c[i]) {
+                    k++;
                 }
+            }
+            if (k == n) {
+                out.println("NO");
             } else {
-                long p = a;
-                while (p < b) {
-                    if (p % 2 != 0) {
-                        sum += x;
-                        p++;
-                    } else {
-                        sum += Math.min(x, y);
-                        p++;
+                out.println("YES");
+                out.println(n - k);
+                for (int i = 0; i < n; i++) {
+                    if(arr[i] != c[i]){
+                        out.print(arr[i] + " ");
                     }
                 }
-                out.println(sum);
+                out.println();
             }
         }
         out.close();
