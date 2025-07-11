@@ -135,4 +135,4 @@ npm install mongoose
 ```
 - Write logic for connection to mongodb server inside db.ts file .
 - Declare and export all the env variables inside the `env.ts` file.
-- Start the server inside the `index.ts`.
+- Start the server inside  `index.ts`.
